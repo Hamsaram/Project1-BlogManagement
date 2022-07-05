@@ -58,7 +58,7 @@ const authorLogin = async function (req, res) {
     //here we are helping user to enter valid email id
     if (!validateEmail(authorEmail))  return res.status(400).send({ msg: "please enter valid email id" })
     if (!password.trim())  return res.status(400).send({ msg: "Password is required" })
-    let author = await AuthorModel.findOne({ emailId: authorEmail, password: password });
+    let author = await AuthorModel.findOne({ email: authorEmail, password: password });
     if (!author)return res.status(400).send({status: false,msg: "username or the password is not corerct", });
     let token = jwt.sign({authorId: author._id.toString()}, "Project-1-Blogging-site");
     res.status(200).setHeader("x-api-key", token);
