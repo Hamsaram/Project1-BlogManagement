@@ -11,11 +11,17 @@ const isTokenValid = function (req, res, next) {
     if (!decodedToken) {
         return res.status(400).send({ status: false, msg: "token is invalid" });
     }
-    else {
+    
         next()
-    }
+    
 }catch (err) {
+<<<<<<< HEAD
      return res.status(500).send(err.message)
+=======
+    if(err.message=="invalid token") return res.status(400).send({status:false, msg:"invalid token"})
+    if(err.message=="invalid signiture") return res.status(400).send({status:false, msg:"invalid signiture"})
+    return res.status(500).send(err.message)
+>>>>>>> 7599958b3cc672c51d3b4d71d512bc391eb712a5
 }}
 
 
@@ -37,28 +43,16 @@ const isAuthorised = async function (req, res, next) {
     else {
         return res.status(403).send("you are not authorized to take this action")//403 for forbiden request
     }}catch (err) {
+<<<<<<< HEAD
         if(err.message=="invalid signature")return res.send(400).send({status: false, msg: "token is invalid"})
     if(err.message=="invalid token")return res.send(400).send({status: false, msg: "token is invalid"})
+=======
+        if(err.message=="invalid token") return res.status(400).send({status:false, msg:"invalid token"})
+    if(err.message=="invalid signiture") return res.status(400).send({status:false, msg:"invalid signiture"})
+>>>>>>> 7599958b3cc672c51d3b4d71d512bc391eb712a5
         return res.status(500).send(err.message)
     }
 }
-
-//  const auth = async function (req,res,next){
-//     try{
-//     let data = req.query
-//     let token = req.headers["x-api-key"]
-//     let decodedToken = jwt.decode(token)
-//     let Authors = await BlogsModel.find(data).select({authorId:1,_id:0})
-//     let reqAuthorId = decodedToken.authorId
-//     for(let author of Authors){
-//     if (AuthorId == decodedToken.authorId) {
-//         next()
-//     } return res.send("you are not authorized to take this action")
-//     }}catch (err) {
-//         return res.status(500).send(err.message)
-//     }
-//  }
-
 
 
 
