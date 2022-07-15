@@ -7,7 +7,7 @@ const isTokenValid = function (req, res, next) {
     try{
     let token = req.headers["x-api-key"]
     if(!token) return res.status(400).send("token is not present")
-    let decodedToken = jwt.decode(token)
+    let decodedToken = jwt.verify(token, "Project-1-Blogging-site")
     if (!decodedToken) {
         return res.status(400).send({ status: false, msg: "token is invalid" });
     }
@@ -15,7 +15,7 @@ const isTokenValid = function (req, res, next) {
         next()
     }
 }catch (err) {
-    return res.status(500).send(err.message)
+     return res.status(500).send(err.message)
 }}
 
 
@@ -29,7 +29,7 @@ const isAuthorised = async function (req, res, next) {
     }
     let authorId = requiredBlog.authorId
     let token = req.headers["x-api-key"]
-    let decodedToken = jwt.decode(token)
+    let decodedToken = jwt.verify(token, "Project-1-Blogging-site")
     console.log(decodedToken)
     if (authorId == decodedToken.authorId) {
         next()
@@ -37,6 +37,8 @@ const isAuthorised = async function (req, res, next) {
     else {
         return res.status(403).send("you are not authorized to take this action")//403 for forbiden request
     }}catch (err) {
+        if(err.message=="invalid signature")return res.send(400).send({status: false, msg: "token is invalid"})
+    if(err.message=="invalid token")return res.send(400).send({status: false, msg: "token is invalid"})
         return res.status(500).send(err.message)
     }
 }
